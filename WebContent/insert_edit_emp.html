@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<script type="text/javascript">
+	function activateTab(pageId) {
+		var tabCtrl = document.getElementById('tabCtrl');
+		var pageToActivate = document.getElementById(pageId);
+		for (var i = 0; i < tabCtrl.childNodes.length; i++) {
+			var node = tabCtrl.childNodes[i];
+			if (node.nodeType == 1) { /* Element */
+				node.style.display = (node == pageToActivate) ? 'block'
+						: 'none';
+			}
+		}
+	}
+	
+	function validateForm()
+	{
+	var x=document.forms["insert"]["firstName"].value;
+	if (x==null || x=="")
+	  {
+	  alert("First name must be filled out");
+	  return false;
+	  }
+	var y=document.forms["insert"]["lastName"].value;
+	if (y==null || y=="")
+	  {
+	  alert("Last name must be filled out");
+	  return false;
+	  }
+	var z=document.forms["insert"]["empSSN"].value;
+	if (z==null || z=="")
+	  {
+	  alert("SSN must be filled out");
+	  return false;
+	  }
+	var p=document.forms["insert"]["insetLocation"].value;
+	if (z==null || z=="")
+	  {
+	  alert("Wokring Location must be filled out");
+	  return false;
+	  }
+	var p=document.forms["insert"]["insertSince"].value;
+	if (z==null || z=="")
+	  {
+	  alert("Start working date mandatory");
+	  return false;
+	  }
+	
+	}
+</script>
+
+
+</head>
+<body>
+	<h1>Employee Management Portal</h1>
+	<ul>
+		<li><a href="javascript:activateTab('page1')">Insert Employee</a></li>
+		<li><a href="javascript:activateTab('page2')">Update Employee</a></li>
+	</ul>
+	<div id="tabCtrl">
+	
+		<div id="page1" style="display: block;">			
+		<form name = "insert" method = "post" action="EmployeeServlet?operation=insert" onsubmit="return validateForm()">
+			<table BORDER="1">
+			<tr><td>First Name:</td><td> <input type="text" name="firstName"/><br/></td></tr>
+			<tr><td>Last Name:</td> <td><input type="text" name="lastName"/><br/></td></tr>
+			<tr><td>SSN: </td><td><input type="text" name="empSSN"/><br/></td></tr>
+			<tr><td>Working Location:</td><td> <input type="text" name="insetLocation"/><br/></td></tr>
+			<tr><td>Working Since: </td><td><input type="text" name="insertSince"/><br/></td></tr>
+			<tr><td><input type="submit" value="Submit"></td></tr>
+			</table>
+		</form>
+				
+		
+		</div>
+		<div id="page2" style="display: none;">
+			<form name = "insert" method = "post" action="EmployeeServlet?operation=update" onsubmit="return validateForm()">
+				SSN: <input type="text" name="empSSN"/><br/>
+				First Name: <input type="text" name="updateFirstName"/><br/>
+				Last Name: <input type="text" name="updateLastName"/><br/>
+				Working Location: <input type="text" name="updateLocation"/><br/>
+				Working Since: <input type="text" name="updateSince"/><br/>
+				<input type="submit" value="Submit"/>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

@@ -62,19 +62,50 @@ public class EmployeeServlet extends HttpServlet {
         }else if(operationType.equalsIgnoreCase("update")){
         	System.out.println("Update");
         	updateEmployee(request, response, request.getParameter("updatefirstName"), request.getParameter("updatelastName"), request.getParameter("updateempSSN"), request.getParameter("updatelibSel"), request.getParameter("location"), request.getParameter("updateSince") );
+        }else if(operationType.equalsIgnoreCase("delete")){ 
+        	deleteEmployee(request, response, request.getParameter("deleteEmpSSN"));
         }
 		
 
 	}
 	
+	private void deleteEmployee(HttpServletRequest request,
+			HttpServletResponse response, String empSSN) {
+		PreparedStatement prpstmt = null;
+		try {
+			DBConnectionManager dbManager = (DBConnectionManager) ctx.getAttribute("DBManager");
+			Statement stmt = dbManager.getConnection().createStatement();
+			ResultSet rset = stmt.executeQuery("Select * from Employee where ssn = '"+empSSN+"'");
+			while(!rset.next()){
+				request.setAttribute("error", "Employee does not exist!!");
+				request.getRequestDispatcher("error.jsp").forward(request, response);
+				return;
+			}
+			
+			prpstmt = dbManager.getConnection().prepareStatement("delete from employee where SSN = ?");
+			prpstmt.setInt(1, Integer.parseInt(empSSN));
+			while(prpstmt.executeUpdate()>0){
+				request.setAttribute("error", "Employee deleted successfully!!");
+				request.getRequestDispatcher("error.jsp").forward(request, response);				
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+			errorOccurred(request,response);
+		}catch(IOException e){
+			e.printStackTrace();
+			errorOccurred(request,response);
+		} catch (ServletException e) {
+			e.printStackTrace();
+			errorOccurred(request,response);
+		}
+	}
+
 	private void updateEmployee(HttpServletRequest request, HttpServletResponse response, String firstName,
 			String lastName, String empSSN, String name, String location,
 			String since) {
 
 		PreparedStatement prpstmt = null;
-		PrintWriter pw = null;
 		try {
-			//pw = new PrintWriter(response.getOutputStream());
 			DBConnectionManager dbManager = (DBConnectionManager) ctx.getAttribute("DBManager");
 			Statement stmt = dbManager.getConnection().createStatement();
 			ResultSet rset = stmt.executeQuery("Select * from Employee where ssn = '"+empSSN+"'");
@@ -88,13 +119,26 @@ public class EmployeeServlet extends HttpServlet {
 					prpstmt = dbManager.getConnection().prepareStatement("update Employee Set first_name = ?  where SSN = ?  ");
 					prpstmt.setString(1, firstName);
 					prpstmt.setInt(2, Integer.parseInt(empSSN));
-					prpstmt.executeUpdate();
+					
+					if(prpstmt.executeUpdate()<0){
+						request.setAttribute("error", "DB Broke!!");
+						request.getRequestDispatcher("error.jsp").forward(request, response);
+					}else{
+						request.setAttribute("error", "Update Successful!!");
+						request.getRequestDispatcher("error.jsp").forward(request, response);
+					}
 				}
 				if(lastName!=null && !lastName.isEmpty()){
 					prpstmt = dbManager.getConnection().prepareStatement("update Employee Set last_name = ? where SSN = ?  ");					
 					prpstmt.setString(1, lastName);
 					prpstmt.setInt(2, Integer.parseInt(empSSN));
-					prpstmt.executeUpdate();
+					if(prpstmt.executeUpdate()<0){
+						request.setAttribute("error", "DB Broke!!");
+						request.getRequestDispatcher("error.jsp").forward(request, response);
+					}else{
+						request.setAttribute("error", "Update Successful!!");
+						request.getRequestDispatcher("error.jsp").forward(request, response);
+					}
 				}
 				if(location!=null && !location.isEmpty()){
 					prpstmt = dbManager.getConnection().prepareStatement("update Works_at Set location = ?, name = ? where SSN = ?  ");
@@ -102,7 +146,13 @@ public class EmployeeServlet extends HttpServlet {
 					prpstmt.setString(1, location);
 					prpstmt.setInt(3, Integer.parseInt(empSSN));
 					prpstmt.setString(2, name);
-					prpstmt.executeUpdate();
+					if(prpstmt.executeUpdate()<0){
+						request.setAttribute("error", "DB Broke!!");
+						request.getRequestDispatcher("error.jsp").forward(request, response);
+					}else{
+						request.setAttribute("error", "Update Successful!!");
+						request.getRequestDispatcher("error.jsp").forward(request, response);
+					}
 				}
 				
 				if(since!=null && !since.isEmpty()){
@@ -110,25 +160,26 @@ public class EmployeeServlet extends HttpServlet {
 					
 					prpstmt.setDate(1, java.sql.Date.valueOf(since));
 					prpstmt.setInt(2, Integer.parseInt(empSSN));
-					//prpstmt.executeUpdate();
+					if(prpstmt.executeUpdate()<0){
+						request.setAttribute("error", "DB Broke!!");
+						request.getRequestDispatcher("error.jsp").forward(request, response);
+					}else{
+						request.setAttribute("error", "Update Successful!!");
+						request.getRequestDispatcher("error.jsp").forward(request, response);
+					}
 				}
 				
-				if(prpstmt.executeUpdate()>0){
-					request.setAttribute("error", "Update Successful!!");
-					request.getRequestDispatcher("error.jsp").forward(request, response);
-				}else{
-					request.setAttribute("error", "DB Broke!!");
-					request.getRequestDispatcher("error.jsp").forward(request, response);
-				}
+				
 				
 			}
 			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();			
-			
+			errorOccurred(request,response);
 		}catch (Exception e) {
 			e.printStackTrace();
+			errorOccurred(request,response);
 		}finally{
 		//pw.close();
 		}
@@ -139,7 +190,6 @@ public class EmployeeServlet extends HttpServlet {
 			String lastName, String empSSN, String name, String location,
 			String since) {
 		PreparedStatement prpstmt;
-		PrintWriter pw = null ;
 		try {
 			//pw = new PrintWriter(response.getOutputStream());
 			DBConnectionManager dbManager = (DBConnectionManager) ctx.getAttribute("DBManager");
@@ -172,10 +222,25 @@ public class EmployeeServlet extends HttpServlet {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			errorOccurred(request,response);
 		}catch (Exception e) {
 			e.printStackTrace();
+			errorOccurred(request,response);
 		}finally{
 			//pw.close();
+		}
+	}
+	
+	private void  errorOccurred(HttpServletRequest request, HttpServletResponse response){
+		request.setAttribute("error", "DB Broke!!");
+		try {
+			request.getRequestDispatcher("error.jsp").forward(request, response);
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

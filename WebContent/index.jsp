@@ -4,11 +4,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Welcome Page</title>
+<style type="text/css">
+html{
+text-align: center;}
+</style>
 </head>
 <body>
 <h1>Welcome Message</h1>
-
+<img border="0" src="/images/pulpit.jpg" alt="Welcome Image" width="304" height="228">
 <a href="LibraryServlet">List of Libraries</a>
 
 <h1>Employee Management</h1>

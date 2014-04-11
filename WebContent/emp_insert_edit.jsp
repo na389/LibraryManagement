@@ -22,6 +22,21 @@
 		}
 	}
 	
+	
+	function validateUpdate(){
+		var q=document.forms["update"]["updateempSSN"].value;
+		if (q==null || q=="")
+		  {
+		  alert("SSN mandatory for update");
+		  return false;
+		  }		
+			  else{
+					if(q.length !=9 ){
+						alert("SSN shoudld be of length 9");	
+					}
+		  }
+	}
+	
 	function validateForm()
 	{
 	var x=document.forms["insert"]["firstName"].value;
@@ -42,6 +57,14 @@
 	  alert("SSN must be filled out");
 	  return false;
 	  }
+	else{
+		if(!isNaN(z)){
+			alert("SSN shoudld be a number");
+		}
+		if(z.length !=9 ){
+			alert("SSN shoudld be of length 9");	
+		}
+	}
 	var p=document.forms["insert"]["insetLocation"].value;
 	if (p==null || p=="")
 	  {
@@ -53,14 +76,54 @@
 	  {
 	  alert("Start working date mandatory");
 	  return false;
-	  }
-	var q=document.forms["update"]["updateempSSN"].value;
-	if (q==null || q=="")
-	  {
-	  alert("SSN mandatory for update");
-	  return false;
-	  }	
+	  }else{
+		  var validformat=/^\d{4}\/\d{2}\/\d{2}$/;
+		  var returnval=false;
+		  if (!validformat.test(r)) {
+			  alert("Invalid Date Format. Please correct and submit again.")
+			  input.focus()
+		}else{
+			var yearfield=r.split("/")[0]
+			var monthfield=r.split("/")[1]
+			var dayfield=r.split("/")[2]
+			var dayobj = new Date(yearfield, monthfield-1, dayfield)
+			if ((dayobj.getMonth()+1!=monthfield)||
+					(dayobj.getDate()!=dayfield)||(dayobj.getFullYear()!=yearfield))
+					alert("Invalid Day, Month, or Year range detected. Please correct and submit again.")
+					else
+					returnval=true
+			if (returnval==false) input.select()
+				return returnval
+			}
+		}
+	  
 	
+	
+	}
+	
+	
+	
+	function updateField(value){
+		if(document.getElementById("empType").value!="-1"){
+			xmlHttp=GetXmlHttpObject();
+			if (xmlHttp==null)
+ 			{
+ 				alert ("Browser does not support HTTP Request");
+				return;
+ 			}
+			
+			var url="get_type_details.jsp";
+			url=url+"?empType="+value;
+			
+			xmlHttp.onreadystatechange=stateChangedInsert; 
+			xmlHttp.open("GET",url,true);
+			xmlHttp.send(null);
+        }
+        else
+        {
+                 alert("Please Select Type");
+        }	
+		
 	}
 	
 	
@@ -187,6 +250,10 @@ catch (e)
  }
 return xmlHttp;
 }
+
+function alertError(value){
+	alert(value);
+}
 	
 </script>
 
@@ -194,6 +261,11 @@ return xmlHttp;
 select{
 	font-size: 20px;
 }
+html{
+text-align: center;
+
+}
+
 </style>
 
 </head>
@@ -202,6 +274,7 @@ select{
 	<ul>
 		<li><a href="javascript:activateTab('page1')">Insert Employee</a></li>
 		<li><a href="javascript:activateTab('page2')">Update Employee</a></li>
+		<li><a href="javascript:activateTab('page3')">Delete Employee</a></li>
 	</ul>
 	<div id="tabCtrl">
 	
@@ -222,7 +295,7 @@ select{
 			%>
 			
 						
-		<form name = "insert" method = "post" action="EmployeeServlet?operation=insert" onsubmit="return validateForm()">
+		<form name = "insert" method = "post" action="EmployeeServlet?operation=insert" onsubmit="return validateForm()" style="margin: auto;">
 			Select Library:
 			<select name="libNameSelected"  id="libNameSelected" onchange="showLocationInsert(this.value);">
 				<option value="-1">Select Library Name</option>
@@ -230,15 +303,23 @@ select{
         			<option value="<%=entry.getKey()%>"><%=entry.getKey()%></option>
     			<%} %>
 			</select>
+			<!--  <select name="empType"  id="empType">
+				<option value="-1">Select Employee Type</option>
+   			 	<option value="1">Permanent Employee</option>
+   			 	<option value="2">Temporary Employee</option>
+			</select>
+			-->
 			<br/>		
-			<table>
+			<table style="margin: auto;">
 			<tr><td>Location:</td><td><input type="text" name="libLocSelected" id="libLocSelected" value=""/></td></tr>
 			<tr><td>First Name:</td><td> <input type="text" name="firstName"/><br/></td></tr>
 			<tr><td>Last Name:</td> <td><input type="text" name="lastName"/><br/></td></tr>
 			<tr><td>SSN: </td><td><input type="text" name="empSSN"/><br/></td></tr>
-			
-			<!-- <tr><td>Working Location:</td><td> <input type="text" name="insetLocation"/><br/></td></tr> -->			
-			<tr><td>Working Since (YYYY-MM-DD): </td><td><input type="text" name="insertSince"/><br/></td></tr>
+			<tr><td>Working Since (YYYY-MM-DD): </td><td><input type="text" name="insertSince"/><br/></td></tr>		
+			<!-- <tr><td>Working Location:</td><td> <input type="text" name="insetLocation"/><br/></td></tr> 			
+				
+			<tr><td>Wage: </td><td><input type="text" name="insertEmpWage"/><br/></td></tr>
+			<tr><td>Salary: </td><td><input type="text" name="insertEmpSalary"/><br/></td></tr>-->
 			<tr><td><input type="submit" value="Submit"></td></tr>
 			</table>
 			
@@ -247,7 +328,7 @@ select{
 		</div>
 		<div id="page2" style="display: none;">
 		
-		<form name = "update" method = "post" action="EmployeeServlet?operation=update">
+		<form name = "update" method = "post" action="EmployeeServlet?operation=update" style="margin: auto;" onsubmit= "return validateUpdate()">
 			Choose Library:
 			<select  name = "updatelibSel" id="updatelibSel" onchange="showLocation(this.value);">
 				<option value="-1">Select Library Name</option>
@@ -260,7 +341,7 @@ select{
     			
 			</select>
 			<br/>
-			<table>
+			<table style="margin: auto;">
 			<tr><td>Location:</td><td><input type="text" name="location" id="location" value=""/></td></tr>
 			<tr><td>First Name:</td><td> <input type="text" name="updatefirstName"/><br/></td></tr>
 			<tr><td>Last Name:</td> <td><input type="text" name="updatelastName"/><br/></td></tr>
@@ -270,12 +351,27 @@ select{
 			</table>
 			
 		</form>
-			<%}else{
-    				System.out.println("Connection Time Out");	
-    			} %>	
+				
 		
 			
 		</div>
+		<div id="page3" style="display: none;">
+			<form name = "delete" method = "post" action="EmployeeServlet?operation=delete" style="margin: auto;">
+			<table style="margin: auto;">
+				<tr><td>Enter SSN for deletion: </td><td><input type="text" name="deleteEmpSSN"/><br/></td></tr>
+				<tr><td><input type="submit" value="Submit"></td></tr>
+			</table>
+			</form>
+		</div>
+		<%}else{	
+					
+    				System.out.println("Connection Time Out");
+    				%>
+    				<script>
+    					alertError("Connection Time Out");
+					</script>
+    				<%
+    			} %>
 	</div>
 </body>
 </html>

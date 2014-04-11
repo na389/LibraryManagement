@@ -6,6 +6,7 @@
 <%@ page import=" java.sql.ResultSet" %>
 <%@ page import=" java.sql.Statement" %>
 <%
+
 ServletContext ctx = getServletContext();
 DBConnectionManager dbManager = (DBConnectionManager) ctx.getAttribute("DBManager");
 Statement stmt = dbManager.getConnection().createStatement();

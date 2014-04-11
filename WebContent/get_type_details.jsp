@@ -25,12 +25,16 @@
 	Statement stmt = dbManager.getConnection().createStatement();
 	ResultSet rset= null;
 
-	if(request.getParameter("updatelibSel") == null || request.getParameter("updatelibSel").isEmpty()){
+	if(request.getParameter("empType") == null || request.getParameter("empType").isEmpty()){
 		%>
 		<script type="text/javascript">
 		alert("Parameter Not passed!!");
 		</script>
 		<%
+	return;
+	}
+	if(request.getParameter("empType").equals("1")){
+		
 	}
 	 rset = stmt.executeQuery("Select * from Library where name = '"+request.getParameter("updatelibSel").toString()+"'");
 		System.out.println(">>>>>>>>>>>>>>>>>>>");

@@ -58,6 +58,11 @@ public class LibraryServlet extends HttpServlet {
 					
 			pw.println("<H1>Select library to move further<BR></H1>");
 			pw.println("<BR>");
+			while(!rset.next()){
+				pw.println("Result not Found!!");
+				
+			}
+			
 			while (rset.next()) {							
 				pw.println("<a href= \"list_employees.jsp?" +  libSelected + "="+rset.getString("Name")+ " \"> "+ rset.getString("name") +"</a> <BR>");
 			}			

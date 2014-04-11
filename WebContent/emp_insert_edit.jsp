@@ -153,12 +153,14 @@
 			return false;
 		}else{
 			if (a == "1") {
+				
 			    if (document.getElementById("insertEmpSalary").value == null || document.getElementById("insertEmpSalary").value == "") {
 		            alert("Enter Salary!!");
 		            return false;
 		        }
 		    }else if(a == "2"){
-		        if (document.getElementById("insertEmpWage").value == null || document.getElementById("insertEmpWage").value == "") {
+		    	var g = document.getElementById("insertEmpWage");
+		        if (g[g.selectedIndex].value == null || g[g.selectedIndex].value.value == "-1") {
 		            alert("Enter Wage!!");
 		            return false;
 		        }
@@ -334,7 +336,7 @@ background-color:#CCFF66;
 					<tr>
 						<td>Location:</td>
 						<td><input type="text" name="libLocSelected"
-							id="libLocSelected" value="" disabled="disabled" /></td>
+							id="libLocSelected" value="" readonly="readonly"/></td>
 					</tr>
 					<tr>
 						<td>First Name:</td>
@@ -354,9 +356,13 @@ background-color:#CCFF66;
 					</tr>
 					<!-- <tr><td>Working Location:</td><td> <input type="text" name="insetLocation"/><br/></td></tr>-->
 					<tr>
-						<td>Wage(40/60):</td>
-						<td><input type="text" name="insertEmpWage"
-							id="insertEmpWage" /><br /></td>
+						
+						<td>Wage:						
+						<select name="insertEmpWage" id="insertEmpWage">
+							<option value="-1">Select Wage</option>
+							<option value="40">40</option>
+							<option value="60">60</option>
+						</select></td>
 					</tr>
 					<tr>
 						<td>Salary:</td>
@@ -393,7 +399,7 @@ background-color:#CCFF66;
 					<tr>
 						<td>Location:</td>
 						<td>						   
-						<input type="text" name="location" id="location" disabled="disabled" value="" /></td>
+						<input type="text" name="location" id="location"  value="" readonly="readonly"/></td>
 					</tr>
 					<tr>
 						<td>First Name:</td>
@@ -435,6 +441,7 @@ background-color:#CCFF66;
 				</table>
 			</form>
 		</div>
+		
 		<%
 			}else{	
 					

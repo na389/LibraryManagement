@@ -67,12 +67,14 @@ public class EmployeeServlet extends HttpServlet {
         			request.getParameter("updateempSSN"), request.getParameter("updatelibSel"), request.getParameter("location"), request.getParameter("updateSince") );
         }else if(operationType.equalsIgnoreCase("delete")){ 
         	deleteEmployee(request, response, request.getParameter("deleteEmpSSN"));
+        }else if(operationType.equalsIgnoreCase("detail")){ 
+        	//detailEmployee(request, response, request.getParameter("detailEmpSSN"));
         }
 		
 
 	}
 	
-	private void deleteEmployee(HttpServletRequest request,
+		private void deleteEmployee(HttpServletRequest request,
 			HttpServletResponse response, String empSSN) {
 		PreparedStatement prpstmt = null;
 		try {
@@ -218,6 +220,9 @@ public class EmployeeServlet extends HttpServlet {
 						dbManager.getConnection().commit();
 					}
 				}
+				request.setAttribute("error", "Update Successful!!");
+				request.getRequestDispatcher("error.jsp").forward(request, response);
+				
 								
 				
 			}

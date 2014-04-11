@@ -4,6 +4,7 @@
 <%@ page import="idbproj.DBConnectionManager"%>
 <%@ page import=" java.sql.ResultSet"%>
 <%@ page import=" java.sql.Statement"%>
+<%@ page import=" java.sql.SQLException" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -296,6 +297,7 @@ background-color:#CCFF66;
 
 		<div id="page1" style="display: block;">
 			<%
+			try{
 				ServletContext ctx = getServletContext();
 					DBConnectionManager dbManager = (DBConnectionManager) ctx.getAttribute("DBManager");
 					if(dbManager!=null && dbManager.getConnection()!=null){
@@ -332,7 +334,7 @@ background-color:#CCFF66;
 					<tr>
 						<td>Location:</td>
 						<td><input type="text" name="libLocSelected"
-							id="libLocSelected" value="" /></td>
+							id="libLocSelected" value="" disabled="disabled" /></td>
 					</tr>
 					<tr>
 						<td>First Name:</td>
@@ -390,7 +392,8 @@ background-color:#CCFF66;
 				<table style="margin: auto;">
 					<tr>
 						<td>Location:</td>
-						<td><input type="text" name="location" id="location" value="" /></td>
+						<td>						   
+						<input type="text" name="location" id="location" disabled="disabled" value="" /></td>
 					</tr>
 					<tr>
 						<td>First Name:</td>
@@ -441,6 +444,20 @@ background-color:#CCFF66;
 			alertError("Connection Time Out");
 		</script>
 		<%
+			}
+			}catch(SQLException e){
+				%>
+				<script>
+					alertError("DB Broke!!");
+				</script>
+				<%	
+			}
+			catch(Exception e){
+				%>
+				<script>
+					alertError("Needs Server Restart");
+				</script>
+				<%	
 			}
 		%>
 	</div>

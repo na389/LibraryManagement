@@ -231,8 +231,7 @@ public class EmployeeServlet extends HttpServlet {
 				dbManager.getConnection().rollback();
 				request.getRequestDispatcher("error.jsp").forward(request, response);
 				return;
-			} catch (ServletException e1) {
-				// TODO Auto-generated catch block
+			} catch (ServletException e1) {				
 				e1.printStackTrace();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
@@ -240,10 +239,14 @@ public class EmployeeServlet extends HttpServlet {
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+			}catch(IllegalArgumentException e4){
+				errorOccurred(request,response, "DB Broke!!");
+				e4.printStackTrace();
 			}
 		}catch (Exception e3) {
-			e3.printStackTrace();
 			errorOccurred(request,response, "DB Broke!!");
+			e3.printStackTrace();
+			
 		}finally{
 		//pw.close();
 		}
@@ -364,15 +367,18 @@ public class EmployeeServlet extends HttpServlet {
 			
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
 			errorOccurred(request,response, "DB Broke!!");
+			e.printStackTrace();
+			
 			
 		}catch(IllegalArgumentException e){
-			e.printStackTrace();
 			errorOccurred(request,response, "DB Broke!!");
+			e.printStackTrace();
+			
 		}catch (Exception e) {
-			e.printStackTrace();
 			errorOccurred(request,response, "DB Broke!!");
+			e.printStackTrace();
+			
 		}finally{
 		}
 	}

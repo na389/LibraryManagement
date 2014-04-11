@@ -44,7 +44,7 @@ public class LibraryServlet extends HttpServlet {
         pw = new PrintWriter(response.getOutputStream());
 		Statement stmt;
 		try {
-			pw.println("<html><body>");	
+			pw.println("<html><body background-color:#CCFF66; >");	
 			if(dbManager == null){
 				pw.println("<H1>Connection Issue<BR></H1>");
 				return;

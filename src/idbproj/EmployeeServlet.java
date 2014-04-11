@@ -321,7 +321,7 @@ public class EmployeeServlet extends HttpServlet {
 					if(wage!=null && !wage.isEmpty() ){
 					prpstmt = dbManager.getConnection().prepareStatement("insert into temp_emp values(?,?)");
 					prpstmt.setInt(1, Integer.parseInt(empSSN));					 					
-					prpstmt.setString(2, wage);
+					prpstmt.setDouble(2, Double.valueOf(wage));
 					op3 = prpstmt.executeUpdate();
 				
 				}else{

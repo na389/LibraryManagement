@@ -160,12 +160,7 @@
 		        if (document.getElementById("insertEmpWage").value == null || document.getElementById("insertEmpWage").value == "") {
 		            alert("Enter Wage!!");
 		            return false;
-		        }else{
-		        	if(document.getElementById("insertEmpWage").value.length > 2){
-		        		alert("Wage should be two digit long!!");
-			            return false;
-		        	}
-		        } 
+		        }
 		    }
 		}
 
@@ -355,7 +350,7 @@ html {
 					</tr>
 					<!-- <tr><td>Working Location:</td><td> <input type="text" name="insetLocation"/><br/></td></tr>-->
 					<tr>
-						<td>Wage:</td>
+						<td>Wage(40/60):</td>
 						<td><input type="text" name="insertEmpWage"
 							id="insertEmpWage" /><br /></td>
 					</tr>

@@ -8,14 +8,22 @@
 <style type="text/css">
 html{
 text-align: center;}
+body{
+background-color:#CCFF66;
+}
 </style>
 </head>
 <body>
+<img border="0" src="images/lib-mng.jpg" alt="Welcome Image" width="1500" height="228"><br/>
 <h1>Welcome Message</h1>
-<img border="0" src="/images/pulpit.jpg" alt="Welcome Image" width="304" height="228">
-<a href="LibraryServlet">List of Libraries</a>
+Created By:<br/>
+Neha Aggarwal : na2542 <br/>
+Swikriti Jain : sj2615 <br/>
+Click on the link below to look at the library related data<br/>
+<a href="LibraryServlet">List of Libraries</a><br/>
 
-<h1>Employee Management</h1>
+<h1>Employee Management</h1><br/>
+Click on the link below to look at the employee related data<br/>
 <a href="emp_insert_edit.jsp">Employee Related Operations</a>
 </body>
 </html>

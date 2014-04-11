@@ -16,11 +16,13 @@ text-align: center;
 }
 body{
 text-align: center;
+background-color:#CCFF66;
 }
 </style>
 <title>Employee Table</title> 
 </head> 
 <body> 
+<img border="0" src="images/lib-mng.jpg" alt="Welcome Image" width="1500" height="228"><br/>
 <%
 try{
 ServletContext ctx = getServletContext();

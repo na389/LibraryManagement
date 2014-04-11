@@ -50,8 +50,8 @@
 		var c = document.forms["update"]["updateSince"].value;
 
 		if (c == null || c == "") {
-			alert("Start working date mandatory");
-			return false;
+			//alert("Start working date mandatory");
+			//return false;
 		} else {
 
 			var validformat = /^\d{4}\-\d{2}\-\d{2}$/;
@@ -273,23 +273,25 @@
 </script>
 
 <style type="text/css">
-select {
-	font-size: 20px;
-}
 
 html {
 	text-align: center;
+}
+body{
+background-color:#CCFF66;
 }
 </style>
 
 </head>
 <body onload="init()">
-	<h1>Employee Management Portal</h1>
+	
+<img border="0" src="images/lib-mng.jpg" alt="Welcome Image" width="1500" height="228"><br/>
+<h1>Employee Management Portal</h1>
 	<ul>
 		<li><a href="javascript:activateTab('page1')">Insert Employee</a></li>
 		<li><a href="javascript:activateTab('page2')">Update Employee</a></li>
 		<li><a href="javascript:activateTab('page3')">Delete Employee</a></li>
-	</ul>
+	</ul>	
 	<div id="tabCtrl">
 
 		<div id="page1" style="display: block;">

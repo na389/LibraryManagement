@@ -22,6 +22,15 @@
 		<%
 		return;
 	}
+	if(dbManager.getConnection() == null){
+		
+		%>
+		<script type="text/javascript">
+		alert("Connection Time Out!!");
+		</script>
+		<%
+		return;
+	}
 	Statement stmt = dbManager.getConnection().createStatement();
 	ResultSet rset= null;
 
@@ -32,8 +41,7 @@
 		</script>
 		<%
 	}
-	 rset = stmt.executeQuery("Select * from Library where name = '"+request.getParameter("updatelibSel").toString()+"'");
-		System.out.println(">>>>>>>>>>>>>>>>>>>");
+	 rset = stmt.executeQuery("Select * from Library where name = '"+request.getParameter("updatelibSel").toString()+"'");		
 	
 		while(rset.next()){
 			data = ":"+rset.getString("location")+":";			

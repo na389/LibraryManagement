@@ -44,19 +44,33 @@ public class LibraryServlet extends HttpServlet {
         pw = new PrintWriter(response.getOutputStream());
 		Statement stmt;
 		try {
+			pw.println("<html><body>");	
+			if(dbManager == null){
+				pw.println("<H1>Connection Issue<BR></H1>");
+				return;
+			}
+			if(dbManager.getConnection()==null){
+				pw.println("<H1>Connection Issue<BR></H1>");
+				return;
+			}
 			stmt = dbManager.getConnection().createStatement();
 			rset = stmt.executeQuery("Select name, location from Library");
-			pw.println("<html>");			
+					
 			pw.println("<H1>Select library to move further<BR></H1>");
-			pw.println("<body><BR>");
+			pw.println("<BR>");
 			while (rset.next()) {							
 				pw.println("<a href= \"list_employees.jsp?" +  libSelected + "="+rset.getString("Name")+ " \"> "+ rset.getString("name") +"</a> <BR>");
 			}			
-			pw.println("</body></html>");
+			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			pw.println("Error Occurred!!");
+		}catch(Exception e){
+			e.printStackTrace();
+			pw.println("Error Occurred!!");
 		}
+		pw.println("</body></html>");
 		pw.close();
 	}
 

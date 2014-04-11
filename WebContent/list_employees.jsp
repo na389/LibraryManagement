@@ -25,10 +25,17 @@ text-align: center;
 try{
 ServletContext ctx = getServletContext();
 DBConnectionManager dbManager = (DBConnectionManager) ctx.getAttribute("DBManager");
-if(dbManager==null){
+if(dbManager==null ){
 	%>
 	<script type="text/javascript">
-	alert("Connection TIme out!!");</script>
+	alert("Connection Time out!!");</script>
+	<% 
+	return;
+}
+if(dbManager.getConnection() == null){
+	%>
+	<script type="text/javascript">
+	alert("Connection Time out!!");</script>
 	<% 
 	return;
 }

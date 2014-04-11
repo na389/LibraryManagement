@@ -22,6 +22,15 @@
 		<%
 		return;
 	}
+	if(dbManager.getConnection() == null){
+		
+		%>
+		<script type="text/javascript">
+		alert("Connection Time Out!!");
+		</script>
+		<%
+		return;
+	}
 	Statement stmt = dbManager.getConnection().createStatement();
 	ResultSet rset= null;
 
@@ -34,15 +43,20 @@
 	return;
 	}
 	if(request.getParameter("empType").equals("1")){
-		
-	}
-	 rset = stmt.executeQuery("Select * from Library where name = '"+request.getParameter("updatelibSel").toString()+"'");
-		System.out.println(">>>>>>>>>>>>>>>>>>>");
-	
+		rset = stmt.executeQuery("Select * from Perm_Emp where name = '"+request.getParameter("empType").toString()+"'");
+		System.out.println(">>>>>>>>>>>>>>>>>>>"+request.getParameter("empType"));	
 		while(rset.next()){
-			data = ":"+rset.getString("location")+":";			
-		}
-	
+			data = ":"+rset.getString("salary")+":";			
+		}	
+	}else if(request.getParameter("empType").equals("2")){
+		rset = stmt.executeQuery("Select * from Temp_Emp where name = '"+request.getParameter("empType").toString()+"'");
+		System.out.println("><<<<<<<<<<<"+request.getParameter("empType"));	
+		while(rset.next()){
+			data = ":"+rset.getString("wage")+":";			
+		}	
+	} 
+	 
+	System.out.println("data");
 	out.println(data);
 }catch (SQLException e) {
 	e.printStackTrace();
